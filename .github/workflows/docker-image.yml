@@ -31,4 +31,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: igzhang/chat_ops_web:${{ steps.version.outputs.version }}
+        tags: igzhang/chat_proxy_web:${{ steps.version.outputs.version }}
