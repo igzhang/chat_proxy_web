@@ -14,25 +14,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --tag igzhang/chat_ops_web:$(date +%s)
-
-    - name: Log in to the Container registry
-      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-      with:
-          username: igzhang
-          password: ${{ secrets.DOCKER_PWD }}
-          
-    - name: Extract metadata (tags, labels) for Docker
-      id: meta
-      uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-      with:
-        images: igzhang/chat_ops_web
+      name: git checkout
+    
+    - name: Get next version
+      uses: reecetech/version-increment@2023.4.1
+      id: version
           
     - name: Build and push Docker image
       uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
       with:
+        image: igzhang/chat_ops_web
         context: .
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
+        tags: ${{ steps.version.outputs.version }}
+        username: igzhang
+        password: ${{ secrets.DOCKER_PWD }}
+
