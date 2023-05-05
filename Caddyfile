@@ -1,0 +1,4 @@
+:80
+root * /root/
+file_server
+reverse_proxy /chat backend:8080
