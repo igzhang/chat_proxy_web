@@ -19,14 +19,16 @@ jobs:
     - name: Get next version
       uses: reecetech/version-increment@2023.4.1
       id: version
-          
-    - name: Build and push Docker image
-      uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+      
+    - name: Log in to the Container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
       with:
-        image: igzhang/chat_ops_web
-        context: .
-        push: true
-        tags: ${{ steps.version.outputs.version }}
         username: igzhang
         password: ${{ secrets.DOCKER_PWD }}
-
+          
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4.0.0
+      with:
+        context: .
+        push: true
+        tags: igzhang/chat_ops_web:${{ steps.version.outputs.version }}
